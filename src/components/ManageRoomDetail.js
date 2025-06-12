@@ -25,10 +25,28 @@ function ManageRoomDetail() {
             [fieldName]: value,
         }));
         setInfo("");
+        setErr({});
+    };
+
+    const validateForm = () => {
+        if (!room.title.trim()) {
+            setErr({message: "Title is required"});
+            return false;
+        }
+        if(!/^-?\d+$/.test(room.room_number)) {
+            setErr({message: "Room number must be an integer"});
+            return false;
+        }
+        return true;
     };
 
     function handleSubmit(event) {
         event.preventDefault();
+
+        if(!validateForm()) {
+            return false;
+        }
+
         const formdata = new FormData();
         formdata.append("title", room.title);
         formdata.append("room_number", room.room_number);
@@ -42,7 +60,7 @@ function ManageRoomDetail() {
 
         fetch(`https://wad-as-2-backend.vercel.app/api/rooms/${roomId}/`, requestOptions)
           .then((response) => response.text())
-          .then((result) => setInfo(result))
+          .then((result) => {setInfo(result); console.log(result);})
           .catch((error) => setErr(error));
     }
 
@@ -87,7 +105,7 @@ function ManageRoomDetail() {
                         </div>
 
                         <div className="form-group row">
-                            &nbsp;{err instanceof Error && <p style={{'color': 'red'}}>{err.message}</p>}
+                            &nbsp;{err.message && <p style={{'color': 'red'}}>{err.message}</p>}
                             {info !== "" && <p style={{'color': 'green'}}>Succesful!</p>}
                         </div>
 
