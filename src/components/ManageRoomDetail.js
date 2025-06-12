@@ -38,7 +38,7 @@ function ManageRoomDetail() {
           redirect: "follow"
         };
 
-        fetch(`http://wad-as-2-backend.vercel.app/api/rooms/${roomId}/`, requestOptions)
+        fetch(`https://wad-as-2-backend.vercel.app/api/rooms/${roomId}/`, requestOptions)
           .then((response) => response.text())
           .then((result) => console.log(result))
           .catch((error) => setErr(error));
