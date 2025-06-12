@@ -58,7 +58,7 @@ function ManageRoomCreate() {
     return (
         <div className="d-flex justify-content-center align-items-center mt-5">
             <div className="border border-1 border-secondary p-4 rounded">
-                <div><p>Room Create</p></div>
+                <div><h2>Room Create</h2></div>
 
                 <form onSubmit={handleSubmit} className="form-horizontal">
 
