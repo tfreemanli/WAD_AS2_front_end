@@ -5,13 +5,51 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 function ManageRooms() {
     const [rooms, setRooms] = useState([]);
     const [err, setErr] = useState("");
+    const [orderBy, setOrderBy] = useState("updated_at");
+    const [sortDirection, setSortDirection] = useState('desc');
 
     useEffect(() => {
         fetch('https://wad-as-2-backend.vercel.app/api/rooms/')
             .then(response => response.json())
-            .then(data => setRooms(data !== null ?data:[]))
+            .then(data => setRooms(data !== null ? data : []))
             .catch(err => setErr(err));
     }, []);
+
+    const sortedRooms = [...rooms].sort((a, b) => {
+        if (!orderBy) return 0; // 如果不排序，保持原顺序
+
+        // 获取比较值
+        const valueA = a[orderBy];
+        const valueB = b[orderBy];
+
+        // 数字排序
+        if (typeof valueA === 'number') {
+            return sortDirection === 'asc'
+                ? valueA - valueB
+                : valueB - valueA;
+        }
+
+        // 字符串排序
+        if (typeof valueA === 'string') {
+            return sortDirection === 'asc'
+                ? valueA.localeCompare(valueB)
+                : valueB.localeCompare(valueA);
+        }
+
+        return 0;
+    });
+
+    // 切换排序字段和方向
+    const handleSort = (field) => {
+        if (orderBy === field) {
+            // 如果点击已选字段，切换方向
+            setSortDirection(prev => prev === 'asc' ? 'desc' : 'asc');
+        } else {
+            // 如果点击新字段，设置字段并重置方向
+            setOrderBy(field);
+            setSortDirection('asc');
+        }
+    };
 
     if (!rooms) {
         return <div>Loading...</div>;
@@ -27,32 +65,34 @@ function ManageRooms() {
                         </div>
                     </div>
 
-                    <table className="table table-striped mt-4" >
+                    <table className="table table-striped mt-4">
                         <thead>
                         <tr>
-                            <th scope="col">Title</th>
-                            <th scope="col">Room Number</th>
-                            <th scope="col">Description</th>
-                            <th scope="col">Action</th>
+                            <th scope="col"><Link onClick={()=>handleSort('title')}>Title</Link></th>
+                            <th scope="col"><Link onClick={()=>handleSort('room_number')}>Room Number</Link></th>
+                            <th scope="col"><Link onClick={()=>handleSort('desc')}>Description</Link></th>
+                            <th scope="col"><Link onClick={()=>handleSort('updated_at')}>Action</Link></th>
                         </tr>
                         </thead>
                         <tbody>
-                        {rooms.map( (room) => (
+                        {sortedRooms.map((room) => (
                             <tr key={room.id}>
                                 <td>{room.title}</td>
                                 <td>{room.room_number}</td>
                                 <td>{room.desc}</td>
                                 <td>
-                                    <Link to={'/management/rooms/' + room.id}><i className="bi bi-pencil me-2"></i></Link>
-                                    <Link to={'/management/rooms/' + room.id}><i className="bi bi-trash me-2"></i></Link>
+                                    <Link to={'/management/rooms/' + room.id}><i
+                                        className="bi bi-pencil me-2"></i></Link>
+                                    <Link to={'/management/rooms/' + room.id}><i
+                                        className="bi bi-trash me-2"></i></Link>
                                     {/*<a href="{% url 'management_room_delete' room.id %}"><i*/}
                                     {/*    className="bi bi-trash me-2"></i></a>*/}
                                 </td>
                             </tr>
                         ))}
                         <tr>
-                            <td colSpan="4" style={{ 'text-align': 'left'}}>
-                                {/*<a href="{% url 'management_room_create' %}" className="btn btn-primary">Add</a>*/}
+                            <td colSpan="4" style={{'text-align': 'left'}}>
+                                <Link to="/management/rooms/create" className="btn btn-primary">Add</Link>
                             </td>
                         </tr>
                         </tbody>
