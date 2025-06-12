@@ -83,7 +83,7 @@ function ManageRooms() {
                                 <td>
                                     <Link to={'/management/rooms/' + room.id}><i
                                         className="bi bi-pencil me-2"></i></Link>
-                                    <Link to={'/management/rooms/' + room.id}><i
+                                    <Link to={'/management/rooms/delete/' + room.id}><i
                                         className="bi bi-trash me-2"></i></Link>
                                     {/*<a href="{% url 'management_room_delete' room.id %}"><i*/}
                                     {/*    className="bi bi-trash me-2"></i></a>*/}

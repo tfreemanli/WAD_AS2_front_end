@@ -5,6 +5,7 @@ import Menu from "./components/Menu";
 import ManageRooms from "./components/ManageRooms";
 import ManageRoomDetail from "./components/ManageRoomDetail";
 import ManageRoomCreate from "./components/ManageRoomCreate";
+import ManageRoomDelete from "./components/ManageRoomDelete";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path="/management/rooms" element={<ManageRooms />}></Route>
         <Route path="/management/rooms/create" element={<ManageRoomCreate />}></Route>
         <Route path="/management/rooms/:roomId" element={<ManageRoomDetail />}></Route>
+        <Route path="/management/rooms/delete/:roomId" element={<ManageRoomDelete />}></Route>
         <Route path="/management/reservations" element={<h1>Reservations</h1>}></Route>
         <Route path="/management/users" element={<h1>Users</h1>}></Route>
       </Routes></BrowserRouter>
