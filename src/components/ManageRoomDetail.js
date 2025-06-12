@@ -10,6 +10,7 @@ function ManageRoomDetail() {
     desc: '',
   });
     const [err, setErr] = useState("");
+    const [info, setInfo] = useState("");
 
     useEffect(() => {
         fetch(`https://wad-as-2-backend.vercel.app/api/rooms/${roomId}/`)
@@ -23,6 +24,7 @@ function ManageRoomDetail() {
             ...prev,
             [fieldName]: value,
         }));
+        setInfo("");
     };
 
     function handleSubmit(event) {
@@ -40,7 +42,7 @@ function ManageRoomDetail() {
 
         fetch(`https://wad-as-2-backend.vercel.app/api/rooms/${roomId}/`, requestOptions)
           .then((response) => response.text())
-          .then((result) => console.log(result))
+          .then((result) => setInfo(result))
           .catch((error) => setErr(error));
     }
 
@@ -85,14 +87,15 @@ function ManageRoomDetail() {
                         </div>
 
                         <div className="form-group row">
-                            &nbsp;{err instanceof Error && <p>{err.message}</p>}
+                            &nbsp;{err instanceof Error && <p style={{'color': 'red'}}>{err.message}</p>}
+                            {info !== "" && <p style={{'color': 'green'}}>Succesful!</p>}
                         </div>
 
                         <div className="form-group row">
                             <div className="col-sm-10 offset-sm-2">
                                 <button type="submit" className="btn btn-primary"> OK</button>
                                 <button type="button" className="btn btn-secondary"
-                                        onClick={() => window.location.href = '/management/rooms/'}> Cancel
+                                        onClick={() => window.location.href = '/management/rooms/'}> Back
                                 </button>
                             </div>
                         </div>
