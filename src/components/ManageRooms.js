@@ -91,7 +91,7 @@ function ManageRooms() {
                             </tr>
                         ))}
                         <tr>
-                            <td colSpan="4" style={{'text-align': 'left'}}>
+                            <td colSpan="4" style={{textAlign: 'left'}}>
                                 <Link to="/management/rooms/create" className="btn btn-primary">Add</Link>
                             </td>
                         </tr>
