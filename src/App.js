@@ -10,6 +10,12 @@ import ManageReservations from "./components/ManageReservations";
 import ManageReservationCreate from "./components/ManageReservationCreate";
 import ManageReservationDetail from "./components/ManageReservationDetail";
 import ManageReservationDelete from "./components/ManageReservationDelete";
+import MyReservations from "./components/MyReservations";
+import MyReservationDelete from "./components/MyReservationDelete";
+import MyReservationDetail from "./components/MyReservationDetail";
+import MyReservationCreate from "./components/MyReservationCreate";
+import MyReservationPickARoom from "./components/MyReservationPickARoom";
+import MyReservationPressOK from "./components/MyReservationPressOK";
 
 function App() {
   return (
@@ -22,8 +28,12 @@ function App() {
       <Menu></Menu>
       <BrowserRouter><Routes>
         <Route path="/" element={<h1>Home</h1>}></Route>
-        <Route path="/booking" element={<h1>booking</h1>}></Route>
-        <Route path="/mybooking" element={<h1>myBooking</h1>}></Route>
+        <Route path="/booking" element={<MyReservationPickARoom />}></Route>
+        <Route path="/booking/create/" element={<MyReservationPressOK />}></Route>
+        <Route path="/reservations" element={<MyReservations />}></Route>
+        <Route path="/reservations/create" element={<MyReservationCreate />}></Route>
+        <Route path="/reservations/:reservationId" element={<MyReservationDetail />}></Route>
+        <Route path="/reservations/delete/:reservationId" element={<MyReservationDelete />}></Route>
         <Route path="/management/rooms" element={<ManageRooms />}></Route>
         <Route path="/management/rooms/create" element={<ManageRoomCreate />}></Route>
         <Route path="/management/rooms/:roomId" element={<ManageRoomDetail />}></Route>

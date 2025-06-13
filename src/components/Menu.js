@@ -13,7 +13,7 @@ function Menu(props) {
           <Nav className="me-auto">
             <Nav.Link href="/">Home</Nav.Link>
             <Nav.Link href="/booking">Booking</Nav.Link>
-            <Nav.Link href="/mybooking">My Booking</Nav.Link>
+            <Nav.Link href="/reservations">My Booking</Nav.Link>
 
             <NavDropdown title="Admin" id="basic-nav-dropdown">
               <NavDropdown.Item href="/management/rooms/">Room Management</NavDropdown.Item>
