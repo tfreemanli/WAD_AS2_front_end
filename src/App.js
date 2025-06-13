@@ -6,6 +6,10 @@ import ManageRooms from "./components/ManageRooms";
 import ManageRoomDetail from "./components/ManageRoomDetail";
 import ManageRoomCreate from "./components/ManageRoomCreate";
 import ManageRoomDelete from "./components/ManageRoomDelete";
+import ManageReservations from "./components/ManageReservations";
+import ManageReservationCreate from "./components/ManageReservationCreate";
+import ManageReservationDetail from "./components/ManageReservationDetail";
+import ManageReservationDelete from "./components/ManageReservationDelete";
 
 function App() {
   return (
@@ -24,7 +28,10 @@ function App() {
         <Route path="/management/rooms/create" element={<ManageRoomCreate />}></Route>
         <Route path="/management/rooms/:roomId" element={<ManageRoomDetail />}></Route>
         <Route path="/management/rooms/delete/:roomId" element={<ManageRoomDelete />}></Route>
-        <Route path="/management/reservations" element={<h1>Reservations</h1>}></Route>
+        <Route path="/management/reservations" element={<ManageReservations />}></Route>
+        <Route path="/management/reservations/create" element={<ManageReservationCreate />}></Route>
+        <Route path="/management/reservations/:reservationId" element={<ManageReservationDetail />}></Route>
+        <Route path="/management/reservations/delete/:reservationId" element={<ManageReservationDelete />}></Route>
         <Route path="/management/users" element={<h1>Users</h1>}></Route>
       </Routes></BrowserRouter>
     </div>
