@@ -75,6 +75,7 @@ function ManageRoomDetail() {
                 setInfo(result);
                 console.log(result);
             })
+            .then(()=>{window.location.href='/management/rooms/'})
             .catch((error) => setErr(error));
     }
 
