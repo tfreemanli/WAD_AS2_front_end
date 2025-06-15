@@ -6,7 +6,7 @@ import MyConst from "./MyConst";
 function ManageRooms() {
     const [rooms, setRooms] = useState([]);
     const [err, setErr] = useState("");
-    const [orderBy, setOrderBy] = useState("updated_at");
+    const [orderBy, setOrderBy] = useState("room_number");
     const [sortDirection, setSortDirection] = useState('desc');
 
 
