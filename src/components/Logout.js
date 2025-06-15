@@ -1,10 +1,12 @@
 import axios from "axios";
 import MyConst from "./MyConst";
-import React, {useState} from "react";
+import React, {useState, useContext} from "react";
+import {AuthContext} from "../AuthContext";
 
 function Logout() {
 
     const [err, setErr] = useState('');
+    const { myLogout } = useContext(AuthContext);
 
     function handleSubmit(event) {
         let config = {
@@ -20,9 +22,10 @@ function Logout() {
             .then((response) => {
                 console.log(JSON.stringify(response.data));
                 setErr("Logout success.");
-                localStorage.removeItem("token");
-                window.location.href = "/";
+                //localStorage.removeItem("token");
+                myLogout();
             })
+            .then(()=> window.location.href = "/")
             .catch((error) => {
                 console.log(error);
                 setErr("Logout failure.");
@@ -35,8 +38,8 @@ function Logout() {
                 <div><h1>Logout</h1></div>
 
                     <div className="col-md-12 mb-3">
-                        {err || err.message}
                         <input type="button" value="Logout" onClick={handleSubmit}/>
+                        <p>{err || err.message}</p>
                     </div>
             </div>
         </div>

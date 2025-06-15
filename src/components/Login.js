@@ -1,6 +1,7 @@
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 import myConst from "./MyConst";
 import axios from "axios";
+import {AuthContext} from "../AuthContext";
 
 function Login() {
 
@@ -8,8 +9,12 @@ function Login() {
     const [password, setPassword] = useState('');
     const [err, setErr] = useState('');
     const [info, setInfo] = useState('');
+    const { myLogin } = useContext(AuthContext);
 
     function handleSubmit(event) {
+
+        setErr("Logining... please wait.");
+
         let data = JSON.stringify({
             "username": username,
             "password": password
@@ -28,10 +33,14 @@ function Login() {
         axios.request(config)
             .then((response) => {
                 console.log(JSON.stringify(response.data));
-                localStorage.setItem("token", response.data.token);
-                setInfo(response.data.token);
-                window.location.href = "/";
+                (async () => {
+                    await myLogin(response.data.token);
+                    window.location.href = "/";
+                })();
+                //setInfo(response.data.token);
+
             })
+            //.then(()=> window.location.href = "/")
             .catch((error) => {
                 console.log(error);
                 setErr("Login Error.");
@@ -56,7 +65,7 @@ function Login() {
 
                     <div className="form-group row">
                         <label htmlFor="password" className="col-12 col-form-label Txt-left">
-                            Check In Datetime
+                            Password
                         </label>
                         <div className="col-12">
                             <input type="password" name="password" id="password"
@@ -71,7 +80,7 @@ function Login() {
 
                     <div className="form-group row">
                         <div className="col-sm-10 offset-sm-2">
-                            <button type="button" className="btn btn-primary" onClick={handleSubmit}> OK</button>
+                            <button type="submit" className="btn btn-primary" onClick={handleSubmit}> OK</button>
                         </div>
                     </div>
             </div>
