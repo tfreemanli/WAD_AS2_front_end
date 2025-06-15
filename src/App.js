@@ -19,6 +19,10 @@ import Register from "./components/Register";
 import Login from "./components/Login";
 import Logout from "./components/Logout";
 import {AuthProvider} from './AuthContext';
+import ManageUsers from "./components/ManageUsers";
+import ManageUserCreate from "./components/ManageUserCreate";
+import ManageUserDetail from "./components/ManageUserDetail";
+import ManageUserDelete from "./components/ManageUserDelete";
 
 function App() {
     return (
@@ -47,7 +51,10 @@ function App() {
                     <Route path="/management/reservations/:reservationId" element={<ManageReservationDetail/>}></Route>
                     <Route path="/management/reservations/delete/:reservationId"
                            element={<ManageReservationDelete/>}></Route>
-                    <Route path="/management/users" element={<h1>Users</h1>}></Route>
+                    <Route path="/management/users" element={<ManageUsers />}></Route>
+                    <Route path="/management/users/create" element={<ManageUserCreate />}></Route>
+                    <Route path="/management/users/:userId" element={<ManageUserDetail />}></Route>
+                    <Route path="/management/users/delete/:userId" element={<ManageUserDelete />}></Route>
                     <Route path="/register" element={<Register/>}></Route>
                     <Route path="/login" element={<Login/>}/>
                     <Route path="/logout" element={<Logout/>}/>
