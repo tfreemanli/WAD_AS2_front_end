@@ -1,4 +1,5 @@
 import React, { useState} from "react";
+import MyConst from "./MyConst";
 
 function ManageRoomCreate() {
     const [room, setRoom] = useState({
@@ -46,10 +47,13 @@ function ManageRoomCreate() {
         const requestOptions = {
           method: "POST",
           body: form_data,
-          redirect: "follow"
+          redirect: "follow",
+            headers: {
+                'Authorization': `token ${localStorage.getItem("token")}`
+            }
         };
 
-        fetch(`https://wad-as-2-backend.vercel.app/api/rooms/`, requestOptions)
+        fetch(MyConst.BaseURL + `/api/rooms/`, requestOptions)
           .then((response) => response.text())
           // .then((result) => setInfo(result))
           .then(() => window.location.href = '/management/rooms/')

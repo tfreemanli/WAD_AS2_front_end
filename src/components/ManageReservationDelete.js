@@ -1,28 +1,39 @@
 import React, {useState, useEffect} from 'react';
 import {useParams} from 'react-router-dom';
+import MyConst from "./MyConst";
 
 function ManageReservationDelete() {
     const {reservationId} = useParams();
     const [reservation, setReservation] = useState(null);
     const [err, setErr] = useState("");
     const [info, setInfo] = useState("");
+    const requestOptions = {
+        method: "GET",
+        redirect: "follow",
+        headers: {
+            'Authorization': `token ${localStorage.getItem("token")}`
+        }
+    };
 
     useEffect(() => {
-        fetch(`https://wad-as-2-backend.vercel.app/api/reservations/${reservationId}/`)
+        fetch(`${MyConst.BaseURL}/api/reservations/${reservationId}/`, requestOptions)
             .then(response => response.json())
             .then(data => setReservation(data))
             .catch(err => setErr(err));
-    }, [reservationId]);
+    },[]);
 
     function handleSubmit(event) {
         event.preventDefault();
 
         const requestOptions = {
             method: "DELETE",
-            redirect: "follow"
+            redirect: "follow",
+            headers: {
+                'Authorization': `token ${localStorage.getItem("token")}`
+            }
         };
 
-        fetch(`https://wad-as-2-backend.vercel.app/api/reservations/${reservationId}/`, requestOptions)
+        fetch(`${MyConst.BaseURL}/api/reservations/${reservationId}/`, requestOptions)
             .then((response) => response.text())
             .then((result) => setInfo(result))
             .then(() => window.location.href = '/management/reservations/')

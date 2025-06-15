@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from "react";
+import MyConst from "./MyConst";
 
 function ManageReservationCreate() {
     const [reservation, setReservation] = useState({
@@ -13,8 +14,15 @@ function ManageReservationCreate() {
 
     const [users, setUsers] = useState(null);
 
+    const requestOptions = {
+        method: "GET",
+        redirect: "follow",
+        headers: {
+            'Authorization': `token ${localStorage.getItem("token")}`
+        }
+    };
     useEffect(() => {
-        fetch('https://wad-as-2-backend.vercel.app/api/users/')
+        fetch(MyConst.BaseURL + '/api/users/', requestOptions)
             .then(response => response.json())
             .then(data => setUsers(data !== null ? data : []))
             .catch(err => setErr(err));
@@ -22,7 +30,7 @@ function ManageReservationCreate() {
 
     const [rooms, setRooms] = useState(null);
     useEffect(() => {
-        fetch('https://wad-as-2-backend.vercel.app/api/rooms/')
+        fetch(MyConst.BaseURL + '/api/rooms/' , requestOptions)
             .then(response => response.json())
             .then(data => setRooms(data !== null ? data : []))
             .catch(err => setErr(err));
@@ -84,10 +92,13 @@ function ManageReservationCreate() {
         const requestOptions = {
             method: "POST",
             body: form_data,
-            redirect: "follow"
+            redirect: "follow",
+            headers: {
+                'Authorization': `token ${localStorage.getItem("token")}`
+            }
         };
 
-        fetch(`https://wad-as-2-backend.vercel.app/api/reservations/`, requestOptions)
+        fetch(MyConst.BaseURL + `/api/reservations/`, requestOptions)
             .then((response) => response.text())
             // .then((result) => setInfo(result))
             .then(() => window.location.href = '/management/reservations/')

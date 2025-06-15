@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Link} from "react-router-dom";
 import "bootstrap-icons/font/bootstrap-icons.css";
+import MyConst from "./MyConst";
 
 function ManageReservations() {
 
@@ -8,13 +9,20 @@ function ManageReservations() {
     const [err, setErr] = useState("");
     const [orderBy, setOrderBy] = useState("updated_at");
     const [sortDirection, setSortDirection] = useState('desc');
+    const requestOptions = {
+        method: "GET",
+        redirect: "follow",
+        headers: {
+            'Authorization': `token ${localStorage.getItem("token")}`
+        }
+    };
 
     useEffect(() => {
-        fetch('https://wad-as-2-backend.vercel.app/api/reservations/')
+        fetch(MyConst.BaseURL +'/api/reservations/', requestOptions)
             .then(response => response.json())
             .then(data => setReservations(data !== null ? data : []))
             .catch(err => setErr(err));
-    }, []);
+    },[]);
 
     let sortedReservations = [];
     if(reservations) {

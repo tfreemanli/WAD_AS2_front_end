@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Link} from "react-router-dom";
 import "bootstrap-icons/font/bootstrap-icons.css";
+import MyConst from "./MyConst";
 
 function ManageRooms() {
     const [rooms, setRooms] = useState([]);
@@ -8,12 +9,20 @@ function ManageRooms() {
     const [orderBy, setOrderBy] = useState("updated_at");
     const [sortDirection, setSortDirection] = useState('desc');
 
+    const requestOptions = {
+            method: "GET",
+            redirect: "follow",
+            headers: {
+                'Authorization': `token ${localStorage.getItem("token")}`
+            }
+        };
+
     useEffect(() => {
-        fetch('https://wad-as-2-backend.vercel.app/api/rooms/')
+        fetch(MyConst.BaseURL+ '/api/rooms/', requestOptions)
             .then(response => response.json())
             .then(data => setRooms(data !== null ? data : []))
             .catch(err => setErr(err));
-    }, []);
+    },[]);
 
     const sortedRooms = [...rooms].sort((a, b) => {
         if (!orderBy) return 0; // 如果不排序，保持原顺序

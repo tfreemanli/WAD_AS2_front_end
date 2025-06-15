@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {useParams} from 'react-router-dom';
+import MyConst from "./MyConst";
 
 function ManageReservationDetail() {
     const {reservationId} = useParams();
@@ -13,31 +14,38 @@ function ManageReservationDetail() {
     });
 
     const [users, setUsers] = useState(null);
+    const requestOptions = {
+        method: "GET",
+        redirect: "follow",
+        headers: {
+            'Authorization': `token ${localStorage.getItem("token")}`
+        }
+    };
 
     useEffect(() => {
-        fetch('https://wad-as-2-backend.vercel.app/api/users/')
+        fetch(MyConst.BaseURL + '/api/users/', requestOptions)
             .then(response => response.json())
             .then(data => setUsers(data !== null ? data : []))
             .catch(err => setErr(err));
-    }, []);
+    },[]);
 
     const [rooms, setRooms] = useState(null);
     useEffect(() => {
-        fetch('https://wad-as-2-backend.vercel.app/api/rooms/')
+        fetch(MyConst.BaseURL + '/api/rooms/', requestOptions)
             .then(response => response.json())
             .then(data => setRooms(data !== null ? data : []))
             .catch(err => setErr(err));
-    }, []);
+    },[]);
 
     const [err, setErr] = useState("");
     const [info, setInfo] = useState("");
 
     useEffect(() => {
-        fetch(`https://wad-as-2-backend.vercel.app/api/reservations/${reservationId}/`)
+        fetch(`${MyConst.BaseURL}/api/reservations/${reservationId}/`, requestOptions)
             .then(response => response.json())
             .then(data => setReservation(data))
             .catch(err => setErr(err));
-    }, [reservationId]);
+    },[]);
 
     const handleChange = (fieldName, value) => {
         setReservation(prev => ({
@@ -90,10 +98,13 @@ function ManageReservationDetail() {
         const requestOptions = {
             method: "PUT",
             body: form_data,
-            redirect: "follow"
+            redirect: "follow",
+            headers: {
+                'Authorization': `token ${localStorage.getItem("token")}`
+            }
         };
 
-        fetch(`https://wad-as-2-backend.vercel.app/api/reservations/${reservationId}/`, requestOptions)
+        fetch(`${MyConst.BaseURL}/api/reservations/${reservationId}/`, requestOptions)
             .then((response) => response.text())
             // .then((result) => {
             //     setInfo(result);

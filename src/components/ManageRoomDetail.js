@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {useParams} from 'react-router-dom';
+import MyConst from "./MyConst";
 
 function ManageRoomDetail() {
     const {roomId} = useParams();
@@ -12,12 +13,19 @@ function ManageRoomDetail() {
     const [err, setErr] = useState("");
     const [info, setInfo] = useState("");
 
+    const requestOptions = {
+            method: "GET",
+            redirect: "follow",
+            headers: {
+                'Authorization': `token ${localStorage.getItem("token")}`
+            }
+        };
     useEffect(() => {
-        fetch(`https://wad-as-2-backend.vercel.app/api/rooms/${roomId}/`)
+        fetch(`${MyConst.BaseURL}/api/rooms/${roomId}/`, requestOptions)
             .then(response => response.json())
             .then(data => setRoom(data))
             .catch(err => setErr(err));
-    }, [roomId]);
+    },[]);
 
     const handleChange = (fieldName, value) => {
         setRoom(prev => ({
@@ -58,7 +66,7 @@ function ManageRoomDetail() {
             redirect: "follow"
         };
 
-        fetch(`https://wad-as-2-backend.vercel.app/api/rooms/${roomId}/`, requestOptions)
+        fetch(`${MyConst.BaseURL}/api/rooms/${roomId}/`, requestOptions)
             .then((response) => response.text())
             .then((result) => {
                 setInfo(result);
@@ -108,7 +116,7 @@ function ManageRoomDetail() {
 
                     <div className="form-group row">
                         &nbsp;{err.message && <p style={{'color': 'red'}}>{err.message}</p>}
-                        {info !== "" && <p style={{'color': 'green'}}>Succesful!</p>}
+                        {info !== "" && <p style={{'color': 'green'}}>{info}</p>}
                     </div>
 
                     <div className="form-group row">

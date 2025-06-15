@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {useParams} from 'react-router-dom';
+import MyConst from "./MyConst";
 
 function ManageRoomDelete() {
     const {roomId} = useParams();
@@ -11,23 +12,32 @@ function ManageRoomDelete() {
     });
     const [err, setErr] = useState("");
     const [info, setInfo] = useState("");
-
+    const requestOptions = {
+        method: "GET",
+        redirect: "follow",
+        headers: {
+            'Authorization': `token ${localStorage.getItem("token")}`
+        }
+    };
     useEffect(() => {
-        fetch(`https://wad-as-2-backend.vercel.app/api/rooms/${roomId}/`)
+        fetch(`${MyConst.BaseURL}/api/rooms/${roomId}/`, requestOptions)
             .then(response => response.json())
             .then(data => setRoom(data))
             .catch(err => setErr(err));
-    }, [roomId]);
+    },[]);
 
     function handleSubmit(event) {
         event.preventDefault();
 
         const requestOptions = {
             method: "DELETE",
-            redirect: "follow"
+            redirect: "follow",
+            headers: {
+                'Authorization': `token ${localStorage.getItem("token")}`
+            }
         };
 
-        fetch(`https://wad-as-2-backend.vercel.app/api/rooms/${roomId}/`, requestOptions)
+        fetch(`${MyConst.BaseURL}/api/rooms/${roomId}/`, requestOptions)
             .then((response) => response.text())
             .then((result) => setInfo(result))
             .then(() => window.location.href = '/management/rooms/')
@@ -51,10 +61,10 @@ function ManageRoomDelete() {
                             &nbsp;{err instanceof Error && <p style={{'color': 'red'}}>{err.message}</p>}
                             {info !== "" && <p style={{'color': 'green'}}>Succesful!</p>}
                         </div>
-                        <button type="submit" className="btn btn-danger"> Delete </button>
+                        <button type="submit" className="btn btn-danger"> Delete</button>
                         &nbsp;&nbsp;&nbsp;
                         <button type="button" className="btn btn-secondary"
-                                        onClick={() => window.location.href = '/management/rooms/'}> Back
+                                onClick={() => window.location.href = '/management/rooms/'}> Back
                         </button>
                     </form>
                 </div>
