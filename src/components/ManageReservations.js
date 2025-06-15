@@ -113,7 +113,7 @@ function ManageReservations() {
                             </tr>
                         ))}
                         <tr>
-                            <td colSpan="4" style={{textAlign: 'left'}}>
+                            <td colSpan="8" style={{textAlign: 'left'}}>
                                 <Link to="/management/reservations/create" className="btn btn-primary">Add</Link>
                             </td>
                         </tr>
