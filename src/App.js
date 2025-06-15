@@ -16,6 +16,9 @@ import MyReservationDetail from "./components/MyReservationDetail";
 import MyReservationCreate from "./components/MyReservationCreate";
 import MyReservationPickARoom from "./components/MyReservationPickARoom";
 import MyReservationPressOK from "./components/MyReservationPressOK";
+import Register from "./components/Register";
+import Login from "./components/Login";
+import Logout from "./components/Logout";
 
 function App() {
   return (
@@ -43,6 +46,9 @@ function App() {
         <Route path="/management/reservations/:reservationId" element={<ManageReservationDetail />}></Route>
         <Route path="/management/reservations/delete/:reservationId" element={<ManageReservationDelete />}></Route>
         <Route path="/management/users" element={<h1>Users</h1>}></Route>
+        <Route path="/register" element={<Register />} ></Route>
+        <Route path="/login" element={<Login />} />
+        <Route path="/logout" element={<Logout />} />
       </Routes></BrowserRouter>
     </div>
   );
