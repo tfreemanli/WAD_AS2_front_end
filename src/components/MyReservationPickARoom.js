@@ -1,6 +1,7 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import {Link} from "react-router-dom";
 import "bootstrap-icons/font/bootstrap-icons.css";
+import MyConst from "./MyConst";
 
 function MyReservationPickARoom() {
     const [rooms, setRooms] = useState(null);
@@ -12,27 +13,32 @@ function MyReservationPickARoom() {
 
     const [startDT, setStartDT] = useState("");
     const [endDT, setEndDT] = useState("");
-    const [count, setCount] = useState(0);
+    // const [count, setCount] = useState(0);
 
     useEffect(() => {
-        fetch('https://wad-as-2-backend.vercel.app/api/rooms/')
-        // fetch('http://localhost:8000/api/rooms/')
+        let config = {
+            method: 'get',
+            headers: {
+                'Authorization': 'token ' + localStorage.getItem("token")
+            }
+        };
+        fetch(MyConst.BaseURL + '/api/rooms/', config)
             .then(response => response.json())
             .then(data => setRooms(data !== null ? data : []))
             .catch(err => setErr(err));
     }, []);
 
-    useMemo(()=>{
-        if(rooms) {
-            setCount(rooms.length);
-        }
-    },[rooms]);
+    // useMemo(()=>{
+    //     if(rooms) {
+    //         setCount(rooms.length);
+    //     }
+    // },[rooms]);
 
 
     const sortedRooms = useMemo(() => {
         if (!rooms) return null;
         return [...rooms].sort((a, b) => {
-        // console.log("Sort is triiiiiiiig" );
+
         if (!orderBy) return 0; // 如果不排序，保持原顺序
 
             // 获取比较值
@@ -107,13 +113,15 @@ function MyReservationPickARoom() {
             return;
         }
 
-        //const getstr = "http://localhost:8000/api/pickaroom/?startDT=" + startDT + "&endDT=" + endDT;
-        const getstr = "https://wad-as-2-backend.vercel.app/api/pickaroom/?startDT=" + startDT + "&endDT=" + endDT;
+        const getstr = MyConst.BaseURL + "/api/pickaroom/?startDT=" + startDT + "&endDT=" + endDT;
 
 
         const requestOptions = {
             method: "GET",
-            redirect: "follow"
+            redirect: "follow",
+            headers: {
+                'Authorization': 'token ' + localStorage.getItem("token")
+            }
         };
 
         fetch(getstr, requestOptions)
@@ -160,7 +168,7 @@ function MyReservationPickARoom() {
                             </div>
                         </form>
                         <div>
-                            <strong>{err && err.message && <p style={{'color': 'red'}}>{err.message}</p>}{info}</strong> Available Room Count: {count}
+                            <strong>{err && err.message && <p style={{'color': 'red'}}>{err.message}</p>}{info}</strong> Available Room Count: {rooms.length}
                         </div>
                     </div>
 

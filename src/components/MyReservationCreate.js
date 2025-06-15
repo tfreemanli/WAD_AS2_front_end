@@ -1,34 +1,40 @@
 import React, {useEffect, useState} from "react";
-import {useSearchParams } from 'react-router-dom'
 import MyConst from "./MyConst";
 
-function MyReservationPressOK() {
-    const [params] = useSearchParams();
+function MyReservationCreate() {
     const [reservation, setReservation] = useState({
         title: '',
-        check_in_datetime: params.get('startDT'),//get from Request.get
-        check_out_datetime: params.get('endDT'),//get from Request.get
+        check_in_datetime: '',
+        check_out_datetime: '',
         desc: '',
-        client: '1',//get from session
-        creator: '1',//get from session
-        room: params.get('id'),//get from Request.get
+        client: '',
+        creator: '',
+        room: '',
     });
 
-    const [rooms, setRooms] = useState(null);
-
+    const [users, setUsers] = useState(null);
     const requestOptions = {
-        method: "GET",
-        redirect: "follow",
-        headers: {
-            'Authorization': `token ${localStorage.getItem("token")}`
-        }
-    };
+            method: "GET",
+            redirect: "follow",
+            headers: {
+                'Authorization': `token ${localStorage.getItem("token")}`
+            }
+        };
+
     useEffect(() => {
-        fetch(MyConst.BaseURL+ '/api/rooms/', requestOptions)
+        fetch(MyConst.BaseURL + '/api/users/', requestOptions)
+            .then(response => response.json())
+            .then(data => setUsers(data !== null ? data : []))
+            .catch(err => setErr(err));
+    },[]);
+
+    const [rooms, setRooms] = useState(null);
+    useEffect(() => {
+        fetch(MyConst.BaseURL + '/api/rooms/', requestOptions)
             .then(response => response.json())
             .then(data => setRooms(data !== null ? data : []))
             .catch(err => setErr(err));
-    }, []);
+    },[]);
 
     const [err, setErr] = useState("");
     const [info, setInfo] = useState("");
@@ -46,6 +52,22 @@ function MyReservationPressOK() {
     const validateForm = () => {
         if (!reservation.title.trim()) {
             setErr({title: "Title is required"});
+            return false;
+        }
+        if (!/^-?\d+$/.test(reservation.client)) {
+            setErr({client: "Please select a client."});
+            return false;
+        }
+        if (!/^-?\d+$/.test(reservation.room)) {
+            setErr({room: "Please select a room."});
+            return false;
+        }
+        if (!reservation.check_in_datetime) {
+            setErr({check_in_datetime: "Please select a Check-In datetime."});
+            return false;
+        }
+        if (!reservation.check_out_datetime) {
+            setErr({check_out_datetime: "Please select a Check-Out datetime."});
             return false;
         }
         return true;
@@ -79,11 +101,11 @@ function MyReservationPressOK() {
         fetch(MyConst.BaseURL + `/api/myreservations/`, requestOptions)
             .then((response) => response.text())
             // .then((result) => setInfo(result))
-            .then(() => window.location.href = '/reservations/')
+            .then(() => window.location.href = '/management/reservations/')
             .catch((error) => setErr(error));
     }
 
-    if (!rooms) {
+    if (!rooms || !users) {
         return <div>Loading...</div>;
     }
 
@@ -106,14 +128,22 @@ function MyReservationPressOK() {
                     </div>
 
                     <div className="form-group row">
-                        <label htmlFor="desc" className="col-12 col-form-label Txt-left">
-                            Description
+                        <label htmlFor="client" className="col-12 col-form-label Txt-left">
+                            Client
                         </label>
                         <div className="col-12">
-                            <input type="text" name="desc" id="desc" className="form-control"
-                                   onChange={(e) => handleChange('desc', e.target.value)}/>
+                            <select name="client" className="form-select" id="client" required
+                                    onChange={(e) => handleChange('client', e.target.value)}>
+                                <option value selected>----------</option>
+                                { users.map((user)=> {
+                                    return(
+                                    <option value={user.id}>{user.first_name + " " + user.last_name + " = " + user.username}</option>
+                                );
+                                }) }
+
+                            </select>
                         </div>
-                        {err.desc && <p style={{'color': 'red'}}>{err.desc}</p>}
+                        {err.client && <p style={{'color': 'red'}}>{err.client}</p>}
                     </div>
 
                     <div className="form-group row">
@@ -121,9 +151,10 @@ function MyReservationPressOK() {
                             Room
                         </label>
                         <div className="col-12">
-                            <select name="room" className="form-select" id="room" aria-readonly="true" value={reservation.room}>
+                            <select name="room" className="form-select" id="room"
+                                    onChange={(e) => handleChange('room', e.target.value)}>
                                 <option value selected>----------</option>
-                                {rooms.map((room)=>{
+                                {rooms.map((room)=>{//dosth
                                     return( <option value={room.id}>{room.id}-{room.title} </option>);
                                     })}
                             </select>
@@ -137,7 +168,8 @@ function MyReservationPressOK() {
                         </label>
                         <div className="col-12">
                             <input type="datetime-local" name="check_in_datetime" id="check_in_datetime"
-                                   className="form-control" value={reservation.check_in_datetime} readOnly="true" />
+                                   className="form-control"
+                                   onChange={(e) => handleChange('check_in_datetime', e.target.value)}/>
                         </div>
                         {err.check_in_datetime && <p style={{'color': 'red'}}>{err.check_in_datetime}</p>}
                     </div>
@@ -148,9 +180,21 @@ function MyReservationPressOK() {
                         </label>
                         <div className="col-12">
                             <input type="datetime-local" name="check_out_datetime" id="check_out_datetime"
-                                   className="form-control"  value={reservation.check_out_datetime} readOnly="true" />
+                                   className="form-control"
+                                   onChange={(e) => handleChange('check_out_datetime', e.target.value)}/>
                         </div>
                         {err.check_out_datetime && <p style={{'color': 'red'}}>{err.check_out_datetime}</p>}
+                    </div>
+
+                    <div className="form-group row">
+                        <label htmlFor="desc" className="col-12 col-form-label Txt-left">
+                            Description
+                        </label>
+                        <div className="col-12">
+                            <input type="text" name="desc" id="desc" className="form-control"
+                                   onChange={(e) => handleChange('desc', e.target.value)}/>
+                        </div>
+                        {err.desc && <p style={{'color': 'red'}}>{err.desc}</p>}
                     </div>
 
                     <div className="form-group row">
@@ -172,4 +216,4 @@ function MyReservationPressOK() {
     );
 }
 
-export default MyReservationPressOK
+export default MyReservationCreate
