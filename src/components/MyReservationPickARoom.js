@@ -161,9 +161,9 @@ function MyReservationPickARoom() {
                             </div>
                             <div>
                                 Check In :<input type="datetime-local" name="startDT" id="startDT"
-                                                 onChange={(e) => setStartDT(e.target.value)}/>
+                                                 onChange={(e) => {setStartDT(e.target.value);setInfo("")}}/>
                                 Check Out:<input type="datetime-local" name="endDT" id="endDT"
-                                                 onChange={(e) => setEndDT(e.target.value)}/>
+                                                 onChange={(e) => {setEndDT(e.target.value);setInfo("")}}/>
                                 <input className="btn btn-primary" type="submit" value="Check Available"/>
                             </div>
                         </form>

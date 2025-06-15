@@ -13,16 +13,16 @@ function MyReservationDetail() {
         room: '',
     });
 
-    const requestOptions = {
+
+    const [rooms, setRooms] = useState(null);
+    useEffect(() => {
+        let requestOptions = {
             method: "GET",
             redirect: "follow",
             headers: {
                 'Authorization': `token ${localStorage.getItem("token")}`
             }
         };
-
-    const [rooms, setRooms] = useState(null);
-    useEffect(() => {
         fetch(MyConst.BaseURL+'/api/rooms/', requestOptions)
             .then(response => response.json())
             .then(data => setRooms(data !== null ? data : []))
@@ -33,6 +33,13 @@ function MyReservationDetail() {
     const [info, setInfo] = useState("");
 
     useEffect(() => {
+        let requestOptions = {
+            method: "GET",
+            redirect: "follow",
+            headers: {
+                'Authorization': `token ${localStorage.getItem("token")}`
+            }
+        };
         fetch(`${MyConst.BaseURL}/api/myreservations/${reservationId}/`, requestOptions)
             .then(response => response.json())
             .then(data => setReservation(data))
@@ -87,7 +94,7 @@ function MyReservationDetail() {
         form_data.append("check_out_datetime", reservation.check_out_datetime);
         form_data.append("desc", reservation.desc);
 
-        const requestOptions = {
+        let requestOptions = {
             method: "PUT",
             body: form_data,
             redirect: "follow",

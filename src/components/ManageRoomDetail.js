@@ -13,19 +13,19 @@ function ManageRoomDetail() {
     const [err, setErr] = useState("");
     const [info, setInfo] = useState("");
 
-    const requestOptions = {
-            method: "GET",
-            redirect: "follow",
-            headers: {
-                'Authorization': `token ${localStorage.getItem("token")}`
-            }
-        };
     useEffect(() => {
+        let requestOptions = {
+                method: "GET",
+                redirect: "follow",
+                headers: {
+                    'Authorization': `token ${localStorage.getItem("token")}`
+                }
+            };
         fetch(`${MyConst.BaseURL}/api/rooms/${roomId}/`, requestOptions)
             .then(response => response.json())
             .then(data => setRoom(data))
             .catch(err => setErr(err));
-    },[]);
+    },[roomId]);
 
     const handleChange = (fieldName, value) => {
         setRoom(prev => ({

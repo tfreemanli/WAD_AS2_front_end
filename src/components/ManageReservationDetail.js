@@ -14,15 +14,15 @@ function ManageReservationDetail() {
     });
 
     const [users, setUsers] = useState(null);
-    const requestOptions = {
-        method: "GET",
-        redirect: "follow",
-        headers: {
-            'Authorization': `token ${localStorage.getItem("token")}`
-        }
-    };
 
     useEffect(() => {
+        let requestOptions = {
+            method: "GET",
+            redirect: "follow",
+            headers: {
+                'Authorization': `token ${localStorage.getItem("token")}`
+            }
+        };
         fetch(MyConst.BaseURL + '/api/users/', requestOptions)
             .then(response => response.json())
             .then(data => setUsers(data !== null ? data : []))
@@ -31,6 +31,13 @@ function ManageReservationDetail() {
 
     const [rooms, setRooms] = useState(null);
     useEffect(() => {
+        let requestOptions = {
+            method: "GET",
+            redirect: "follow",
+            headers: {
+                'Authorization': `token ${localStorage.getItem("token")}`
+            }
+        };
         fetch(MyConst.BaseURL + '/api/rooms/', requestOptions)
             .then(response => response.json())
             .then(data => setRooms(data !== null ? data : []))
@@ -41,11 +48,18 @@ function ManageReservationDetail() {
     const [info, setInfo] = useState("");
 
     useEffect(() => {
+        let requestOptions = {
+            method: "GET",
+            redirect: "follow",
+            headers: {
+                'Authorization': `token ${localStorage.getItem("token")}`
+            }
+        };
         fetch(`${MyConst.BaseURL}/api/reservations/${reservationId}/`, requestOptions)
             .then(response => response.json())
             .then(data => setReservation(data))
             .catch(err => setErr(err));
-    },[]);
+    },[reservationId]);
 
     const handleChange = (fieldName, value) => {
         setReservation(prev => ({
@@ -95,7 +109,7 @@ function ManageReservationDetail() {
         form_data.append("check_out_datetime", reservation.check_out_datetime);
         form_data.append("desc", reservation.desc);
 
-        const requestOptions = {
+        let requestOptions = {
             method: "PUT",
             body: form_data,
             redirect: "follow",

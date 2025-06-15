@@ -9,15 +9,15 @@ function ManageReservations() {
     const [err, setErr] = useState("");
     const [orderBy, setOrderBy] = useState("updated_at");
     const [sortDirection, setSortDirection] = useState('desc');
-    const requestOptions = {
-        method: "GET",
-        redirect: "follow",
-        headers: {
-            'Authorization': `token ${localStorage.getItem("token")}`
-        }
-    };
 
     useEffect(() => {
+        let requestOptions = {
+            method: "GET",
+            redirect: "follow",
+            headers: {
+                'Authorization': `token ${localStorage.getItem("token")}`
+            }
+        };
         fetch(MyConst.BaseURL +'/api/reservations/', requestOptions)
             .then(response => response.json())
             .then(data => setReservations(data !== null ? data : []))
@@ -25,6 +25,7 @@ function ManageReservations() {
     },[]);
 
     let sortedReservations = [];
+
     if(reservations) {
         sortedReservations = [...reservations].sort((a, b) => {
             if (!orderBy) return 0; // 如果不排序，保持原顺序

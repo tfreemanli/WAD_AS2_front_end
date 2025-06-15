@@ -12,24 +12,24 @@ function ManageRoomDelete() {
     });
     const [err, setErr] = useState("");
     const [info, setInfo] = useState("");
-    const requestOptions = {
-        method: "GET",
-        redirect: "follow",
-        headers: {
-            'Authorization': `token ${localStorage.getItem("token")}`
-        }
-    };
     useEffect(() => {
+        let requestOptions = {
+            method: "GET",
+            redirect: "follow",
+            headers: {
+                'Authorization': `token ${localStorage.getItem("token")}`
+            }
+        };
         fetch(`${MyConst.BaseURL}/api/rooms/${roomId}/`, requestOptions)
             .then(response => response.json())
             .then(data => setRoom(data))
             .catch(err => setErr(err));
-    },[]);
+    },[roomId]);
 
     function handleSubmit(event) {
         event.preventDefault();
 
-        const requestOptions = {
+        let requestOptions = {
             method: "DELETE",
             redirect: "follow",
             headers: {

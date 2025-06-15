@@ -7,25 +7,25 @@ function MyReservationDelete() {
     const [reservation, setReservation] = useState(null);
     const [err, setErr] = useState("");
     const [info, setInfo] = useState("");
-    const requestOptions = {
+
+    useEffect(() => {
+        let requestOptions = {
             method: "GET",
             redirect: "follow",
             headers: {
                 'Authorization': `token ${localStorage.getItem("token")}`
             }
         };
-
-    useEffect(() => {
         fetch(`${MyConst.BaseURL}/api/myreservations/${reservationId}/`, requestOptions)
             .then(response => response.json())
             .then(data => setReservation(data))
             .catch(err => setErr(err));
-    },[]);
+    },[reservationId]);
 
     function handleSubmit(event) {
         event.preventDefault();
 
-        const requestOptions = {
+        let requestOptions = {
             method: "DELETE",
             redirect: "follow",
             headers: {

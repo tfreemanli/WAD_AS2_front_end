@@ -14,14 +14,14 @@ function ManageReservationCreate() {
 
     const [users, setUsers] = useState(null);
 
-    const requestOptions = {
-        method: "GET",
-        redirect: "follow",
-        headers: {
-            'Authorization': `token ${localStorage.getItem("token")}`
-        }
-    };
     useEffect(() => {
+        const requestOptions = {
+            method: "GET",
+            redirect: "follow",
+            headers: {
+                'Authorization': `token ${localStorage.getItem("token")}`
+            }
+        };
         fetch(MyConst.BaseURL + '/api/users/', requestOptions)
             .then(response => response.json())
             .then(data => setUsers(data !== null ? data : []))
@@ -29,7 +29,15 @@ function ManageReservationCreate() {
     }, []);
 
     const [rooms, setRooms] = useState(null);
+
     useEffect(() => {
+        const requestOptions = {
+            method: "GET",
+            redirect: "follow",
+            headers: {
+                'Authorization': `token ${localStorage.getItem("token")}`
+            }
+        };
         fetch(MyConst.BaseURL + '/api/rooms/' , requestOptions)
             .then(response => response.json())
             .then(data => setRooms(data !== null ? data : []))

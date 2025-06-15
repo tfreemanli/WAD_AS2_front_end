@@ -9,15 +9,15 @@ function MyReservations() {
     const [err, setErr] = useState("");
     const [orderBy, setOrderBy] = useState("updated_at");
     const [sortDirection, setSortDirection] = useState('desc');
-    const requestOptions = {
+
+    useEffect(() => {
+        let requestOptions = {
             method: "GET",
             redirect: "follow",
             headers: {
                 'Authorization': `token ${localStorage.getItem("token")}`
             }
         };
-
-    useEffect(() => {
         fetch(MyConst.BaseURL+ '/api/myreservations/', requestOptions)
             .then(response => response.json())
             .then(data => setReservations(data !== null ? data : []))

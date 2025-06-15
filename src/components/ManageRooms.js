@@ -9,15 +9,15 @@ function ManageRooms() {
     const [orderBy, setOrderBy] = useState("updated_at");
     const [sortDirection, setSortDirection] = useState('desc');
 
-    const requestOptions = {
-            method: "GET",
-            redirect: "follow",
-            headers: {
-                'Authorization': `token ${localStorage.getItem("token")}`
-            }
-        };
 
     useEffect(() => {
+        let requestOptions = {
+                method: "GET",
+                redirect: "follow",
+                headers: {
+                    'Authorization': `token ${localStorage.getItem("token")}`
+                }
+            };
         fetch(MyConst.BaseURL+ '/api/rooms/', requestOptions)
             .then(response => response.json())
             .then(data => setRooms(data !== null ? data : []))
