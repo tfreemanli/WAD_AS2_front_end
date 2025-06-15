@@ -54,6 +54,8 @@ function ManageRoomDetail() {
         if (!validateForm()) {
             return false;
         }
+        const myHeaders = new Headers();
+        myHeaders.append("Authorization", `token ${localStorage.getItem('token')}`);
 
         const formdata = new FormData();
         formdata.append("title", room.title);
@@ -63,7 +65,8 @@ function ManageRoomDetail() {
         const requestOptions = {
             method: "PUT",
             body: formdata,
-            redirect: "follow"
+            redirect: "follow",
+            headers: myHeaders
         };
 
         fetch(`${MyConst.BaseURL}/api/rooms/${roomId}/`, requestOptions)
