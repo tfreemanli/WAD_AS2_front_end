@@ -1,16 +1,18 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, useContext} from "react";
 import {useSearchParams } from 'react-router-dom'
 import MyConst from "./MyConst";
+import {AuthContext} from "../AuthContext";
 
 function MyReservationPressOK() {
+    const {user} = useContext(AuthContext);
     const [params] = useSearchParams();
     const [reservation, setReservation] = useState({
         title: '',
         check_in_datetime: params.get('startDT'),//get from Request.get
         check_out_datetime: params.get('endDT'),//get from Request.get
         desc: '',
-        client: '1',//get from session
-        creator: '1',//get from session
+        client: user.id,//get from session
+        creator: user.id,//get from session
         room: params.get('id'),//get from Request.get
     });
 
